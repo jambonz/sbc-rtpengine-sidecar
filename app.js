@@ -1,3 +1,4 @@
+const assert = require('assert');
 const Srf = require('drachtio-srf');
 const srf = new Srf();
 const opts = Object.assign({
@@ -15,6 +16,19 @@ srf.on('connect', async(err, hp) => {
   if (err) return logger.error({err}, 'Error connecting to drachtio');
   logger.info(`connected to drachtio listening on ${hp}`);
 });
+
+if (!process.env.JAMBONES_SBCS) {
+  assert.ok(process.env.JAMBONES_REDIS_HOST, 'JAMBONES_REDIS_HOST is required when JAMBONES_SBCS env not defined');
+  const {monitorSet} = require('@jambonz/realtimedb-helpers')({
+    host: process.env.JAMBONES_REDIS_HOST,
+    port: process.env.JAMBONES_REDIS_PORT || 6379
+  }, logger);
+  srf.locals = {...srf.locals,
+    dbHelpers: {
+      monitorSet
+    }
+  };
+}
 
 const {lifecycleEmitter, client} = require('./lib/sbc-pinger')(logger);
 
