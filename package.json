@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.848.0",
+    "aws-sdk": "^2.1003.0",
     "@jambonz/realtimedb-helpers": "^0.4.8",
     "bent": "^7.3.12",
     "debug": "^4.3.1",
