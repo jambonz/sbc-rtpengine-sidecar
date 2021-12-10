@@ -7,6 +7,7 @@ const opts = Object.assign({
 const logger = require('pino')(opts);
 const {LifeCycleEvents} = require('./lib/constants');
 require('./lib/dtmf-event-handler')(logger);
+let privateIp;
 
 if (!process.env.DTMF_ONLY) {
   srf.connect({
@@ -17,19 +18,28 @@ if (!process.env.DTMF_ONLY) {
   srf.on('connect', async(err, hp) => {
     if (err) return logger.error({err}, 'Error connecting to drachtio');
     logger.info(`connected to drachtio listening on ${hp}`);
+    const arr = /^(.*)\/(.*):(\d+)$/.exec(hp);
+    if (arr && 'udp' === arr[1]) {
+      privateIp = arr[2];
+      logger.info(`rtpengine is on private IP ${privateIp}`);
+    }
   });
 
   if (!process.env.JAMBONES_SBCS) {
     assert.ok(process.env.JAMBONES_REDIS_HOST, 'JAMBONES_REDIS_HOST is required when JAMBONES_SBCS env not defined');
-    const {monitorSet} = require('@jambonz/realtimedb-helpers')({
+    const {monitorSet, removeFromSet} = require('@jambonz/realtimedb-helpers')({
       host: process.env.JAMBONES_REDIS_HOST,
       port: process.env.JAMBONES_REDIS_PORT || 6379
     }, logger);
     srf.locals = {...srf.locals,
       dbHelpers: {
         monitorSet
-      }
+      },
+      disabled: false
     };
+    const setNameRtp = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-rtp`;
+    logger.info(`set for active rtp servers is ${setNameRtp}`);
+    process.on('SIGUSR2', handle.bind(null, removeFromSet, setNameRtp));
   }
 
   const {lifecycleEmitter, client} = require('./lib/sbc-pinger')(logger);
@@ -48,6 +58,12 @@ if (!process.env.DTMF_ONLY) {
       }
     }
   }, 20000);
+}
+
+function handle(removeFromSet, setName, signal) {
+  console.log(`got signal ${signal}, removing ${privateIp} from set ${setName}`);
+  removeFromSet(setName, privateIp);
+  srf.locals.disabled = true;
 }
 
 module.exports = {srf, logger};
