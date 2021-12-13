@@ -40,6 +40,7 @@ if (!process.env.DTMF_ONLY) {
     const setNameRtp = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-rtp`;
     logger.info(`set for active rtp servers is ${setNameRtp}`);
     process.on('SIGUSR2', handle.bind(null, removeFromSet, setNameRtp));
+    process.on('SIGTERM', handle.bind(null, removeFromSet, setNameRtp));
   }
 
   const {lifecycleEmitter, client} = require('./lib/sbc-pinger')(logger);
