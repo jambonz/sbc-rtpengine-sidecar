@@ -62,7 +62,7 @@ if (!process.env.DTMF_ONLY) {
 }
 
 function handle(removeFromSet, setName, signal) {
-  console.log(`got signal ${signal}, removing ${privateIp} from set ${setName}`);
+  logger.info(`got signal ${signal}, removing ${privateIp} from set ${setName}`);
   removeFromSet(setName, privateIp);
   srf.locals.disabled = true;
 }
