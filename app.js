@@ -9,7 +9,8 @@ const {LifeCycleEvents} = require('./lib/constants');
 require('./lib/dtmf-event-handler')(logger);
 let privateIp;
 
-if (!process.env.DTMF_ONLY || process.env.K8S) {
+const noSip = process.env.K8S || process.env.DTMF_ONLY;
+if (!noSip) {
   srf.connect({
     host: process.env.DRACHTIO_HOST || '127.0.0.1',
     port: process.env.DRACHTIO_PORT || 9022,
