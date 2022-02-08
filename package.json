@@ -11,14 +11,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.848.0",
-    "@jambonz/realtimedb-helpers": "^0.4.8",
+    "aws-sdk": "^2.1070.0",
+    "@jambonz/realtimedb-helpers": "^0.4.20",
     "bent": "^7.3.12",
     "debug": "^4.3.1",
-    "drachtio-srf": "^4.4.48",
+    "drachtio-srf": "^4.4.61",
     "express": "^4.17.1",
     "pino": "^6.11.2",
-    "rtpengine-client": "^0.2.0",
+    "rtpengine-client": "^0.3.2",
     "verify-aws-sns-signature": "^0.0.6",
     "xml2js": "^0.4.23"
   },
