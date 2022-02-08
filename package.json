@@ -15,7 +15,7 @@
     "@jambonz/realtimedb-helpers": "^0.4.14",
     "bent": "^7.3.12",
     "debug": "^4.3.1",
-    "drachtio-srf": "^4.4.48",
+    "drachtio-srf": "^4.4.61",
     "express": "^4.17.1",
     "pino": "^6.11.2",
     "rtpengine-client": "^0.2.0",
