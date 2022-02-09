@@ -17,7 +17,7 @@
     "debug": "^4.3.2",
     "drachtio-srf": "^4.4.61",
     "express": "^4.17.1",
-    "pino": "^6.11.2",
+    "pino": "^6.11.3",
     "rtpengine-client": "^0.3.2",
     "verify-aws-sns-signature": "^0.0.6",
     "xml2js": "^0.4.23"
