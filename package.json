@@ -15,7 +15,7 @@
     "aws-sdk": "^2.1070.0",
     "bent": "^7.3.12",
     "debug": "^4.3.2",
-    "drachtio-srf": "^4.4.61",
+    "drachtio-srf": "^4.5.0",
     "express": "^4.17.1",
     "husky": "^7.0.4",
     "pino": "^6.11.3",
