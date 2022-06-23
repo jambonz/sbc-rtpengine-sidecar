@@ -1,4 +1,4 @@
-FROM node:17.4-slim
+FROM node:lts-slim
 WORKDIR /opt/app/
 COPY package.json ./
 COPY package-lock.json ./
