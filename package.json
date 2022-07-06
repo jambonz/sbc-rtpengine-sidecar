@@ -19,7 +19,7 @@
     "express": "^4.18.1",
     "pino": "^6.14.0",
     "rtpengine-client": "^0.3.2",
-    "verify-aws-sns-signature": "^0.0.6",
+    "verify-aws-sns-signature": "^0.0.7",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
