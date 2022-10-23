@@ -23,16 +23,21 @@ if (!noSip) {
     if (arr && 'udp' === arr[1]) {
       privateIp = arr[2];
       logger.info(`rtpengine is on private IP ${privateIp}`);
+      srf.locals.host = privateIp;
     }
   });
 
   if (!process.env.JAMBONES_SBCS) {
     assert.ok(process.env.JAMBONES_REDIS_HOST, 'JAMBONES_REDIS_HOST is required when JAMBONES_SBCS env not defined');
+    assert.ok(process.env.JAMBONES_REDIS_HOST, 'JAMBONES_REDIS_HOST is required when JAMBONES_SBCS env not defined');
+    const StatsCollector = require('@jambonz/stats-collector');
+    const stats = new StatsCollector(logger);
     const {monitorSet, removeFromSet} = require('@jambonz/realtimedb-helpers')({
       host: process.env.JAMBONES_REDIS_HOST,
       port: process.env.JAMBONES_REDIS_PORT || 6379
     }, logger);
     srf.locals = {...srf.locals,
+      stats,
       dbHelpers: {
         monitorSet
       },
