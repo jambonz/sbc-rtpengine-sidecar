@@ -66,6 +66,28 @@ if (!noSip) {
     }
   }, 20000);
 }
+else {
+  const StatsCollector = require('@jambonz/stats-collector');
+  const stats = new StatsCollector(logger);
+  const Client = require('rtpengine-client').WsClient;
+  const client = new Client(process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080');
+
+  setInterval(async() => {
+    try {
+      const response = await client.statistics();
+      const {result, statistics} = response;
+      const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
+      stats.emit('resourceCount', {
+        host: privateIp,
+        hostType: 'rtp',
+        resource: 'media.calls',
+        count: calls
+      });
+    } catch (err) {
+      logger.error({err}, 'Error in stats collection');
+    }
+  }, process.env.OPTIONS_PING_INTERVAL || 60000);
+}
 
 function handle(removeFromSet, setName, signal) {
   logger.info(`got signal ${signal}, removing ${privateIp} from set ${setName}`);
