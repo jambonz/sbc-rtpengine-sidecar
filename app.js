@@ -72,6 +72,7 @@ else {
   const Client = require('rtpengine-client').WsClient;
   const client = new Client(process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080');
 
+  logger.debug(`writing stats metrics to ${process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080'}`);
   setInterval(async() => {
     try {
       const response = await client.statistics();
