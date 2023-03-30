@@ -73,6 +73,8 @@ else {
   const stats = new StatsCollector(logger);
   const Client = require('rtpengine-client').Client;
   const client = new Client();
+  const ip = require('ip');
+  privateIp = ip.address();
 
   setInterval(async() => {
     try {
