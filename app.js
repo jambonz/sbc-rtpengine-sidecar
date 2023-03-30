@@ -77,12 +77,7 @@ else {
       const response = await client.statistics();
       const {result, statistics} = response;
       const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
-      stats.emit('resourceCount', {
-        host: privateIp,
-        hostType: 'rtp',
-        resource: 'media.calls',
-        count: calls
-      });
+      stats.gauge('sbc.media.calls.count', calls);
     } catch (err) {
       logger.error({err}, 'Error in stats collection');
     }
