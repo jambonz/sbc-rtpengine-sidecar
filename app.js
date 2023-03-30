@@ -81,13 +81,14 @@ else {
       logger.info({response}, 'rtpengine statistics');
       const {result, statistics} = response;
       const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
-      stats.emit('resourceCount', {
+      const obj = {
         host: privateIp,
         hostType: 'rtp',
         resource: 'media.calls',
         count: calls
-      });
-      logger.info('done collecting stats');
+      };
+      stats.emit('resourceCount', obj);
+      logger.info({obj}, 'done collecting stats');
     } catch (err) {
       logger.error({err}, 'Error in stats collection');
     }
