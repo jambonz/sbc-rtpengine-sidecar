@@ -69,16 +69,15 @@ if (!noSip) {
   }, 20000);
 }
 else {
-  logger.info(`writing stats metrics to ${process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080'}`);
   const StatsCollector = require('@jambonz/stats-collector');
   const stats = new StatsCollector(logger);
-  const Client = require('rtpengine-client').WsClient;
-  const client = new Client(process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080');
+  const Client = require('rtpengine-client').Client;
+  const client = new Client();
 
   setInterval(async() => {
     logger.info('collecting stats');
     try {
-      const response = await client.statistics();
+      const response = await client.statistics(process.env.RTPENGINE_NG_PORT || 22222, '127.0.0.1');
       const {result, statistics} = response;
       logger.debug({statistics, result}, 'rtpengine statistics');
       const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
