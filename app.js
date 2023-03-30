@@ -75,11 +75,11 @@ else {
   const client = new Client();
 
   setInterval(async() => {
-    logger.info('collecting stats');
     try {
+      logger.info('collecting stats');
       const response = await client.statistics(process.env.RTPENGINE_NG_PORT || 22222, '127.0.0.1');
+      logger.info({response}, 'rtpengine statistics');
       const {result, statistics} = response;
-      logger.debug({statistics, result}, 'rtpengine statistics');
       const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
       stats.emit('resourceCount', {
         host: privateIp,
@@ -87,6 +87,7 @@ else {
         resource: 'media.calls',
         count: calls
       });
+      logger.info('done collecting stats');
     } catch (err) {
       logger.error({err}, 'Error in stats collection');
     }
