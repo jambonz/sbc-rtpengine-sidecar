@@ -10,7 +10,9 @@ require('./lib/dtmf-event-handler')(logger);
 let privateIp;
 
 const noSip = process.env.K8S || process.env.DTMF_ONLY;
+logger.info(`noSip is ${noSip}`);
 if (!noSip) {
+  logger.info('connecting to drachtio server');
   srf.connect({
     host: process.env.DRACHTIO_HOST || '127.0.0.1',
     port: process.env.DRACHTIO_PORT || 9022,
@@ -67,16 +69,18 @@ if (!noSip) {
   }, 20000);
 }
 else {
+  logger.info(`writing stats metrics to ${process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080'}`);
   const StatsCollector = require('@jambonz/stats-collector');
   const stats = new StatsCollector(logger);
   const Client = require('rtpengine-client').WsClient;
   const client = new Client(process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080');
 
-  logger.debug(`writing stats metrics to ${process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080'}`);
   setInterval(async() => {
+    logger.info('collecting stats');
     try {
       const response = await client.statistics();
       const {result, statistics} = response;
+      logger.debug({statistics, result}, 'rtpengine statistics');
       const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
       stats.emit('resourceCount', {
         host: privateIp,
