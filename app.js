@@ -81,7 +81,7 @@ else {
     } catch (err) {
       logger.error({err}, 'Error in stats collection');
     }
-  }, process.env.OPTIONS_PING_INTERVAL || 60000);
+  }, process.env.OPTIONS_PING_INTERVAL || 30000);
 }
 
 function handle(removeFromSet, setName, signal) {
