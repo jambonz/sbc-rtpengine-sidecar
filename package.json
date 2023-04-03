@@ -16,7 +16,7 @@
     "aws-sdk": "^2.1152.0",
     "bent": "^7.3.12",
     "debug": "^4.3.4",
-    "drachtio-srf": "^4.5.21",
+    "drachtio-srf": "^4.5.23",
     "express": "^4.18.1",
     "pino": "^6.14.0",
     "rtpengine-client": "^0.4.11",
