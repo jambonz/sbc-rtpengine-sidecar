@@ -11,7 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@jambonz/realtimedb-helpers": "^0.4.35",
+    "@jambonz/realtimedb-helpers": "^0.6.6",
     "@jambonz/stats-collector": "^0.1.6",
     "aws-sdk": "^2.1152.0",
     "bent": "^7.3.12",
