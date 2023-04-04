@@ -13,7 +13,7 @@
   "dependencies": {
     "@jambonz/realtimedb-helpers": "^0.6.6",
     "@jambonz/stats-collector": "^0.1.6",
-    "aws-sdk": "^2.1152.0",
+    "aws-sdk": "^2.1333.0",
     "bent": "^7.3.12",
     "debug": "^4.3.4",
     "drachtio-srf": "^4.5.23",
