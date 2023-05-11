@@ -1,6 +1,6 @@
 {
   "name": "sbc-rtpengine-sidecar",
-  "version": "v0.8.1",
+  "version": "v0.8.2",
   "description": "starter drachtio app",
   "main": "app.js",
   "scripts": {
