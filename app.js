@@ -28,11 +28,37 @@ if (!noSip) {
   });
 
   if (!process.env.JAMBONES_SBCS) {
-    assert.ok(process.env.JAMBONES_REDIS_HOST, 'JAMBONES_REDIS_HOST is required when JAMBONES_SBCS env not defined');
-    assert.ok(process.env.JAMBONES_REDIS_HOST, 'JAMBONES_REDIS_HOST is required when JAMBONES_SBCS env not defined');
     const StatsCollector = require('@jambonz/stats-collector');
     const stats = new StatsCollector(logger);
-    const {monitorSet, removeFromSet} = require('@jambonz/realtimedb-helpers')({
+    if (process.env.JAMBONES_REDIS_SENTINELS) {
+      assert.ok(process.env.JAMBONES_REDIS_SENTINEL_MASTER_NAME,
+        'missing JAMBONES_REDIS_SENTINEL_MASTER_NAME env var, JAMBONES_REDIS_SENTINEL_PASSWORD env var is optional');
+    } else {
+      assert.ok(process.env.JAMBONES_REDIS_HOST, 'missing JAMBONES_REDIS_HOST env var');
+    }
+
+    const JAMBONES_REDIS_SENTINELS = process.env.JAMBONES_REDIS_SENTINELS ? {
+      sentinels: process.env.JAMBONES_REDIS_SENTINELS.split(',').map((sentinel) => {
+        let host, port = 26379;
+        if (sentinel.includes(':')) {
+          const arr = sentinel.split(':');
+          host = arr[0];
+          port = parseInt(arr[1], 10);
+        } else {
+          host = sentinel;
+        }
+        return {host, port};
+      }),
+      name: process.env.JAMBONES_REDIS_SENTINEL_MASTER_NAME,
+      ...(process.env.JAMBONES_REDIS_SENTINEL_PASSWORD && {
+        password: process.env.JAMBONES_REDIS_SENTINEL_PASSWORD
+      }),
+      ...(process.env.JAMBONES_REDIS_SENTINEL_USERNAME && {
+        username: process.env.JAMBONES_REDIS_SENTINEL_USERNAME
+      })
+    } : null;
+
+    const {monitorSet, removeFromSet} = require('@jambonz/realtimedb-helpers')(JAMBONES_REDIS_SENTINELS ?? {
       host: process.env.JAMBONES_REDIS_HOST,
       port: process.env.JAMBONES_REDIS_PORT || 6379
     }, logger);
