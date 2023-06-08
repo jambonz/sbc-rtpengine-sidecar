@@ -9,6 +9,8 @@ const {LifeCycleEvents} = require('./lib/constants');
 require('./lib/dtmf-event-handler')(logger);
 let privateIp;
 
+const waitFor = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const noSip = process.env.K8S || process.env.DTMF_ONLY;
 if (!noSip) {
   srf.connect({
@@ -104,6 +106,7 @@ else {
         const uri = process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080';
         try {
           client = new Client(uri);
+          await waitFor(1000);
         } catch (err) {
           logger.error({err}, `Error connecting to rtpengine at ${uri}`);
           return;
