@@ -1,9 +1,24 @@
 const assert = require('assert');
 const Srf = require('drachtio-srf');
+const {
+  LOGLEVEL,
+  K8S,
+  DTMF_ONLY,
+  DRACHTIO_HOST,
+  DRACHTIO_PORT,
+  DRACHTIO_SECRET,
+  JAMBONES_SBCS,
+  JAMBONES_REDIS_SENTINELS,
+  JAMBONES_REDIS_SENTINEL_MASTER_NAME,
+  JAMBONES_REDIS_HOST,
+  JAMBONES_CLUSTER_ID,
+  RTPENGINE_URL,
+  OPTIONS_PING_INTERVAL
+} = require('./lib/config');
 const srf = new Srf();
 const opts = Object.assign({
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
-}, {level: process.env.LOGLEVEL || 'info'});
+}, {level: LOGLEVEL || 'info'});
 const logger = require('pino')(opts);
 const {LifeCycleEvents} = require('./lib/constants');
 require('./lib/dtmf-event-handler')(logger);
@@ -11,12 +26,12 @@ let privateIp;
 
 const waitFor = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const noSip = process.env.K8S || process.env.DTMF_ONLY;
+const noSip = K8S || DTMF_ONLY;
 if (!noSip) {
   srf.connect({
-    host: process.env.DRACHTIO_HOST || '127.0.0.1',
-    port: process.env.DRACHTIO_PORT || 9022,
-    secret: process.env.DRACHTIO_SECRET || 'cymru'
+    host: DRACHTIO_HOST || '127.0.0.1',
+    port: DRACHTIO_PORT || 9022,
+    secret: DRACHTIO_SECRET || 'cymru'
   });
   srf.on('connect', async(err, hp) => {
     if (err) return logger.error({err}, 'Error connecting to drachtio');
@@ -29,14 +44,14 @@ if (!noSip) {
     }
   });
 
-  if (!process.env.JAMBONES_SBCS) {
+  if (!JAMBONES_SBCS) {
     const StatsCollector = require('@jambonz/stats-collector');
     const stats = new StatsCollector(logger);
-    if (process.env.JAMBONES_REDIS_SENTINELS) {
-      assert.ok(process.env.JAMBONES_REDIS_SENTINEL_MASTER_NAME,
+    if (JAMBONES_REDIS_SENTINELS) {
+      assert.ok(JAMBONES_REDIS_SENTINEL_MASTER_NAME,
         'missing JAMBONES_REDIS_SENTINEL_MASTER_NAME env var, JAMBONES_REDIS_SENTINEL_PASSWORD env var is optional');
     } else {
-      assert.ok(process.env.JAMBONES_REDIS_HOST, 'missing JAMBONES_REDIS_HOST env var');
+      assert.ok(JAMBONES_REDIS_HOST, 'missing JAMBONES_REDIS_HOST env var');
     }
 
     const {monitorSet, removeFromSet} = require('@jambonz/realtimedb-helpers')({}, logger);
@@ -47,7 +62,7 @@ if (!noSip) {
       },
       disabled: false
     };
-    const setNameRtp = `${(process.env.JAMBONES_CLUSTER_ID || 'default')}:active-rtp`;
+    const setNameRtp = `${(JAMBONES_CLUSTER_ID || 'default')}:active-rtp`;
     logger.info(`set for active rtp servers is ${setNameRtp}`);
     process.on('SIGUSR2', handle.bind(null, removeFromSet, setNameRtp));
     process.on('SIGTERM', handle.bind(null, removeFromSet, setNameRtp));
@@ -79,7 +94,7 @@ else {
   setInterval(async() => {
     try {
       if (!client) {
-        const uri = process.env.RTPENGINE_URL || 'ws://127.0.0.1:8080';
+        const uri = RTPENGINE_URL || 'ws://127.0.0.1:8080';
         try {
           client = new Client(uri);
           await waitFor(1000);
@@ -96,7 +111,7 @@ else {
     } catch (err) {
       logger.error({err}, 'Error in stats collection');
     }
-  }, process.env.OPTIONS_PING_INTERVAL || 30000);
+  }, OPTIONS_PING_INTERVAL || 30000);
 }
 
 function handle(removeFromSet, setName, signal) {
