@@ -14,7 +14,7 @@ const {
   JAMBONES_CLUSTER_ID,
   RTPENGINE_URL,
   OPTIONS_PING_INTERVAL
-} = require('../lib/config');
+} = require('./lib/config');
 const srf = new Srf();
 const opts = Object.assign({
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
