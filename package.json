@@ -17,7 +17,7 @@
     "@aws-sdk/client-auto-scaling": "^3.549.0",
     "bent": "^7.3.12",
     "debug": "^4.3.4",
-    "drachtio-srf": "^5.0.1",
+    "drachtio-srf": "^5.0.2",
     "express": "^4.19.2",
     "pino": "^8.20.0",
     "rtpengine-client": "^0.4.12",
