@@ -1,6 +1,6 @@
 {
   "name": "sbc-rtpengine-sidecar",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "jambonz sidecar app for rtpengine",
   "main": "app.js",
   "scripts": {
