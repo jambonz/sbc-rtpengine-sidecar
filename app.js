@@ -94,12 +94,28 @@ else {
   setInterval(async() => {
     try {
       if (!client) {
-        const uri = RTPENGINE_URL || 'ws://127.0.0.1:8080';
+        const connect = (uri) =>
+          new Promise((resolve, reject) => {
+            const client = new Client(uri);
+            client.on('listening', () => {
+              resolve(client);
+            });
+            client.on('error', (err) => {
+              reject(err);
+            });
+            waitFor(10000).then(() => reject(new Error('Connection timeout')));
+          });
+          
+        const uri = RTPENGINE_URL || "ws://127.0.0.1:8080";
         try {
-          client = new Client(uri);
-          await waitFor(1000);
+          client = await connect(uri);
+          client.removeAllListeners();
+          // attach error handler to prevent unhandled exception
+          client.on('error', (err) => {
+            logger.error({ err }, `Error with ws connection to rtpengine at ${uri}`);
+          });
         } catch (err) {
-          logger.error({err}, `Error connecting to rtpengine at ${uri}`);
+          logger.error({ err }, `Error connecting to rtpengine at ${uri}`);
           return;
         }
       }
