@@ -19,13 +19,13 @@
     "debug": "^4.3.4",
     "drachtio-srf": "^5.0.5",
     "express": "^4.19.2",
-    "pino": "^8.20.0",
+    "pino": "^10.1.0",
     "rtpengine-client": "^0.4.12",
     "verify-aws-sns-signature": "^0.1.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "eslint": "^7.23.0",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint": "^9.17.0",
+    "eslint-plugin-promise": "^7.2.1"
   }
 }
