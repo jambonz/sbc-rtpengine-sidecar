@@ -3,6 +3,9 @@
   "version": "0.9.5",
   "description": "jambonz sidecar app for rtpengine",
   "main": "app.js",
+  "engines": {
+    "node": ">= 20.0.0"
+  },
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,14 +14,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-auto-scaling": "^3.549.0",
+    "@aws-sdk/client-sns": "^3.549.0",
     "@jambonz/realtimedb-helpers": "^0.8.13",
     "@jambonz/stats-collector": "^0.1.10",
-    "@aws-sdk/client-sns": "^3.549.0",
-    "@aws-sdk/client-auto-scaling": "^3.549.0",
     "bent": "^7.3.12",
-    "debug": "^4.3.4",
+    "debug": "^4.4.3",
     "drachtio-srf": "^5.0.5",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "pino": "^10.1.0",
     "rtpengine-client": "^0.4.12",
     "verify-aws-sns-signature": "^0.1.0",
