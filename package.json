@@ -21,7 +21,7 @@
     "bent": "^7.3.12",
     "debug": "^4.4.3",
     "drachtio-srf": "^5.0.5",
-    "express": "^4.21.2",
+    "express": "^4.22.0",
     "pino": "^10.1.0",
     "rtpengine-client": "^0.4.12",
     "verify-aws-sns-signature": "^0.1.0",
