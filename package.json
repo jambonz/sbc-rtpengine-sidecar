@@ -20,7 +20,7 @@
     "@jambonz/stats-collector": "^0.1.10",
     "bent": "^7.3.12",
     "debug": "^4.4.3",
-    "drachtio-srf": "^5.0.5",
+    "drachtio-srf": "^5.0.25",
     "express": "^4.21.2",
     "pino": "^10.1.0",
     "rtpengine-client": "^0.4.12",
