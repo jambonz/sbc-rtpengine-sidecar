@@ -20,7 +20,6 @@ const opts = Object.assign({
   timestamp: () => {return `, "time": "${new Date().toISOString()}"`;}
 }, {level: LOGLEVEL || 'info'});
 const logger = require('pino')(opts);
-const {LifeCycleEvents} = require('./lib/constants');
 require('./lib/dtmf-event-handler')(logger);
 let privateIp;
 
@@ -68,22 +67,7 @@ if (!noSip) {
     process.on('SIGTERM', handle.bind(null, removeFromSet, setNameRtp));
   }
 
-  const {lifecycleEmitter, client} = require('./lib/sbc-pinger')(logger);
-
-  /* if we are scaling in, check every so often if call count has gone to zero */
-  setInterval(async() => {
-    if (lifecycleEmitter.operationalState === LifeCycleEvents.ScaleIn) {
-      const response = await client.statistics();
-      if (response) {
-        const {result, statistics} = response;
-        const calls = 'ok' === result ? statistics.currentstatistics.sessionsown : 0;
-        if (0 === calls) {
-          logger.info('scale-in complete now that calls have dried up');
-          lifecycleEmitter.scaleIn();
-        }
-      }
-    }
-  }, 20000);
+  require('./lib/sbc-pinger')(logger);
 }
 else {
   const StatsCollector = require('@jambonz/stats-collector');
