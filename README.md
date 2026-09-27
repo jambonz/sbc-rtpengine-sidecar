@@ -9,7 +9,7 @@ Configuration is provided via environment variables:
 | variable | meaning | required?|
 |----------|----------|---------|
 |AWS_REGION| aws region | no|
-|AWS_SNS_PORT| tcp port to listen on for AWS SNS requests |no|
+|AWS_LIFECYCLE_DRAIN| set to `1`, `true` or `yes` on an EC2 autoscaling group member to drain calls on scale-in (polls IMDS `autoscaling/target-lifecycle-state`, then completes the terminating lifecycle hook). The instance role needs `autoscaling:DescribeAutoScalingInstances`, `autoscaling:DescribeLifecycleHooks` and `autoscaling:CompleteLifecycleAction` |no|
 |DTMF_ONLY| run in DTMF only mode |no|
 |RTPENGINE_DTMF_LOG_PORT| listening port for rtp events from rtpengine |yes|
 |RTPENGINE_URL| rtpengine websocket url |no|
