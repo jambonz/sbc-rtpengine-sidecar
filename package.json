@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-auto-scaling": "^3.549.0",
-    "@jambonz/realtimedb-helpers": "^0.8.21",
+    "@jambonz/realtimedb-helpers": "^0.8.23",
     "@jambonz/stats-collector": "^0.1.10",
     "bent": "^7.3.12",
     "debug": "^4.4.3",
