@@ -1,4 +1,4 @@
-FROM node:24-alpine AS base
+FROM node:24.22.1-alpine AS base
 
 RUN apk --update --no-cache add --virtual .builds-deps build-base python3
 
